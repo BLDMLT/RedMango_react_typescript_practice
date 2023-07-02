@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useGetMenuItemsQuery } from '../../../../Apis/menuItemApi'
-import { menuItemModel } from '../../../../Interfaces'
+
 import MenuItemCard from './MenuItemCard'
 import { useDispatch } from 'react-redux'
-import { setMenuItem } from '../../../../Storage/Redux/menuItemSlice'
+import { useGetMenuItemsQuery } from '../../../Apis/menuItemApi';
+import { setMenuItem } from '../../../Storage/Redux/menuItemSlice';
+import { menuItemModel } from '../../../Interfaces';
+import { MainLoader } from '../Common';
+
 
 
 function MenuItemList() {
@@ -19,7 +22,7 @@ function MenuItemList() {
   }, [isLoading,data])
 
   if(isLoading){
-    return <div>Loading</div>
+    return <MainLoader />
   }
 
   return (

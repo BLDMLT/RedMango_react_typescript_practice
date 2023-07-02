@@ -5,7 +5,7 @@ const shoppingCartApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://redmangoapipractice.azurewebsites.net/api/"
   }),
-  tagTypes: ["shoppingCarts"], 
+  tagTypes: ["ShoppingCarts"], 
   endpoints: (builder) => ({
     getShoppingCart : builder.query({
       query: (userId) => ({
@@ -14,7 +14,7 @@ const shoppingCartApi = createApi({
           userId: userId
         }
       }),
-      providesTags: ["shoppingCarts"]
+      providesTags: ["ShoppingCarts"]
     }),
     updateShoppingCart : builder.mutation({
       query: ({
@@ -29,7 +29,8 @@ const shoppingCartApi = createApi({
           updateQuantityBy,
           userId
         }
-      })
+      }),
+      invalidatesTags: ["ShoppingCarts"],
     })
   })
 })
