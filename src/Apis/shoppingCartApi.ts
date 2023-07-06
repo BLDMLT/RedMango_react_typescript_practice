@@ -1,39 +1,40 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const shoppingCartApi = createApi({
-  reducerPath: 'shoppingCartApi',
+  reducerPath: "shoppingCartApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://redmangoapipractice.azurewebsites.net/api/"
+    baseUrl: "https://redmangoapi.azurewebsites.net/api/",
+    prepareHeaders: (headers: Headers, api) => {
+      const token = localStorage.getItem("token");
+      token && headers.append("Authorization", "Bearer " + token);
+    },
   }),
-  tagTypes: ["ShoppingCarts"], 
+  tagTypes: ["ShoppingCarts"],
   endpoints: (builder) => ({
-    getShoppingCart : builder.query({
+    getShoppingCart: builder.query({
       query: (userId) => ({
-        url: "shoppingCart",
+        url: `shoppingcart`,
         params: {
-          userId: userId
-        }
+          userId: userId,
+        },
       }),
-      providesTags: ["ShoppingCarts"]
+      providesTags: ["ShoppingCarts"],
     }),
-    updateShoppingCart : builder.mutation({
-      query: ({
-        menuItemId,
-        updateQuantityBy,
-        userId
-      }) => ({
-        url: "shoppingCart",
+    updateShoppingCart: builder.mutation({
+      query: ({ menuItemId, updateQuantityBy, userId }) => ({
+        url: "shoppingcart",
         method: "POST",
         params: {
           menuItemId,
           updateQuantityBy,
-          userId
-        }
+          userId,
+        },
       }),
       invalidatesTags: ["ShoppingCarts"],
-    })
-  })
-})
+    }),
+  }),
+});
 
-export const { useGetShoppingCartQuery, useUpdateShoppingCartMutation} = shoppingCartApi;
+export const { useGetShoppingCartQuery, useUpdateShoppingCartMutation } =
+  shoppingCartApi;
 export default shoppingCartApi;

@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { cartItemModel } from '../../../Interfaces'
+import { apiResponse, cartItemModel, userModel } from '../../../Interfaces'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../Storage/Redux/store'
 import { inputHelper } from '../../../Helper'
 import { MiniLoader } from '../Common'
+import { useNavigate } from 'react-router-dom'
+import { useInitiatePaymentMutation } from '../../../Apis/paymentApi'
 
 
 function CartPickUpDetails() {
@@ -11,11 +13,12 @@ function CartPickUpDetails() {
   const shoppingCartFromStore: cartItemModel[] = useSelector(
     (state: RootState) => state.shoppingCartStore.cartItems ?? []
   )
+  const userData: userModel = useSelector((state: RootState) => state.userAuthStore)
   let grandTotal = 0;
   let totalItems = 0;
   const initialUserData = {
-    name: '',
-    email: '',
+    name: userData.fullName,
+    email: userData.email,
     phoneNumber: ''
   }
 
@@ -26,6 +29,9 @@ function CartPickUpDetails() {
   })
 
   const [userInput, setUserInput] = useState(initialUserData)
+  const navigate = useNavigate();
+  const [initiatePayment] = useInitiatePaymentMutation();
+
   const handleUserInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const tempData = inputHelper(e, userInput)
     setUserInput(tempData)
@@ -34,6 +40,11 @@ function CartPickUpDetails() {
   const handleSumbit =async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true)
+    const { data }: apiResponse = await initiatePayment(userData.id);
+
+    navigate("/payment", {
+      state: { apiResult: data?.result, userInput },
+    });
   }
 
   return (

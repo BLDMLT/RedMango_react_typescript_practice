@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
 
-const inputHelper = (e: React.ChangeEvent<HTMLInputElement>, data: any) => {
-  const tempData: any = { ...data }
+const inputHelper = (
+  e: React.ChangeEvent<
+    HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+  >,
+  data: any
+) => {
+  const tempData: any = { ...data };
   tempData[e.target.name] = e.target.value;
-  return tempData
-}
+  return tempData;
+};
 
-export default inputHelper
+export default inputHelper;

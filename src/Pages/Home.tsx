@@ -1,5 +1,6 @@
 import React from 'react'
-import { MenuItemList } from '../Components/Page/MenuItem'
+import MenuItemList from './MenuItem/MenuItemList'
+
 
 function Home() {
   return (
